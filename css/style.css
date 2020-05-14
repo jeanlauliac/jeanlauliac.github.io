@@ -1,0 +1,18 @@
+html {
+  font-size: 100%;
+}
+
+body {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  margin: 2rem;
+}
+
+h1 {
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+
+h2 {
+  font-size: 1.6rem;
+  font-weight: normal;
+}
