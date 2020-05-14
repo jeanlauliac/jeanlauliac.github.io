@@ -4,7 +4,7 @@ html {
 
 body {
   font-family: Georgia, "Times New Roman", Times, serif;
-  line-height: 1.5;
+  line-height: 1.6;
   max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;
@@ -21,6 +21,10 @@ a {
 
   text-shadow: -1px -1px white, -1px 1px white, 1px -1px white, 1px 1px white;
   display: inline;
+}
+
+a:hover {
+  box-shadow: none;
 }
 
 header {
