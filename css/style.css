@@ -32,6 +32,11 @@ a:hover {
 header {
   font-size: 1.2rem;
   font-weight: normal;
+  margin-bottom: 4rem;
+}
+
+footer {
+  margin-top: 4rem;
 }
 
 hr {
@@ -57,4 +62,36 @@ hr {
   content: '\2022';
   margin-right: .5rem;
   color: #e6a889;
+}
+
+span.kicker {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-transform: uppercase;
+  font-size: .75rem;
+  font-weight: bold;
+  color: #8a7f79;
+}
+
+h3 {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-weight: normal;
+  margin: 0;
+}
+
+/* h3 a:visited {
+  color: #654639;
+} */
+
+time {
+  color: #4e4845;
+  font-style: italic;
+  font-size: .9rem;
+}
+
+time::after {
+  content: ' •';
+}
+
+article p {
+  margin: 0;
 }
