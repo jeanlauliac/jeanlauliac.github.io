@@ -43,6 +43,18 @@ const home_template = (articles) => `
 </footer>
 `;
 
+const article_template = (metadata, intro, content) => `
+<article>
+
+<span class="kicker">${metadata.kicker}</span>
+<h1>${metadata.title}</h1>
+${intro}
+
+${content}
+
+</article>
+`;
+
 const articles_path = 'src/articles';
 const metadata_regex = /^<!--({[\s\S]+})-->/;
 const time_options = {
@@ -62,19 +74,20 @@ function main() {
 
         const metadata = JSON.parse(metadata_json[1]);
         const html = content.substr(metadata_json[0].length);
+        const intro = `
+        <p><time datetime="${metadata.time}">
+            ${new Intl.DateTimeFormat('en-GB', time_options).format(new Date(metadata.time))}
+        </time> ${metadata.intro}</p>
+        `;
 
         articles.push(`
         <article>
             <span class="kicker">${metadata.kicker}</span>
             <h3><a href="${article_name}">${metadata.title}</a></h3>
-            <p>
-                <time datetime="${metadata.time}">
-                    ${new Intl.DateTimeFormat('en-GB', time_options).format(new Date(metadata.time))}
-                </time> ${metadata.intro}
-            </p>
+            ${intro}
         </article>
         `);
-        fs.writeFileSync(article_name, template(article_name, content));
+        fs.writeFileSync(article_name, template(article_name, article_template(metadata, intro, html)));
     }
     fs.writeFileSync('index.html', template(null, home_template(articles.join('\n'))));
 }
