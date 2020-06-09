@@ -1,9 +1,10 @@
 html {
-  font-size: 100%;
+  font-size: 110%;
 }
 
 body {
   font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 1rem;
   line-height: 1.6;
   max-width: 600px;
   margin: 2rem auto;
@@ -29,7 +30,7 @@ a:hover {
 }
 
 header {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: normal;
 }
 
