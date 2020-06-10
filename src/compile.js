@@ -36,7 +36,7 @@ const home_template = (articles) => `
 </main>
 
 <footer>
-    <ul id="social_links">
+    <ul class="social_links">
         <li><a href="https://mobile.twitter.com/jeanlauliac">twitter</a></li>
         <li><a href="https://github.com/jeanlauliac">github</a></li>
     </ul>
@@ -44,6 +44,13 @@ const home_template = (articles) => `
 `;
 
 const article_template = (metadata, intro, content) => `
+<header>
+
+<ul class="social_links">
+    <li><a href="index.html">home</a></li>
+</ul>
+
+</header>
 <article>
 
 <span class="kicker">${metadata.kicker}</span>
