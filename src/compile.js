@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 const template = (title, content) => `
 <!DOCTYPE html>
@@ -7,7 +7,7 @@ const template = (title, content) => `
 
 <head>
     <meta charset="utf-8">
-    <title>${title != null ? `${title} – ` : ''}Jean's notes</title>
+    <title>${title != null ? `${title} – ` : ""}Jean's notes</title>
     <meta name="author" content="Jean Lauliac">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -26,9 +26,12 @@ ${content}
 
 const home_template = (articles) => `
 <header>
-    Hi! I'm <a href="https://www.twitter.com/jeanlauliac">Jean</a>. I'm a software engineer working at
-    <a href="https://www.theguardian.com/uk">The&nbsp;Guardian</a> and here is
-    where I'll be keeping some notes and side projects.
+    Hi! I'm <a href="https://www.twitter.com/jeanlauliac">Jean</a>. I'm a
+    software engineer at
+    <a href="https://www.bloomberg.com/company/">Bloomberg&nbsp;L.P.</a> and here is where
+    I'll be keeping some notes and side&nbsp;projects. I've formerly been
+    at <a href="https://www.facebook.com/">Facebook</a> and
+    <a href="https://www.theguardian.com/">The&nbsp;Guardian</a>.
 </header>
 
 <main>
@@ -62,41 +65,62 @@ ${content}
 </article>
 `;
 
-const articles_path = 'src/articles';
+const articles_path = "src/articles";
 const metadata_regex = /^<!--({[\s\S]+})-->/;
 const time_options = {
-    dateStyle: "long",
+  dateStyle: "long",
 };
 
 function main() {
-    const article_names = fs.readdirSync(articles_path);
-    const articles = [];
-    
-    for (const article_name of article_names) {
-        const content = fs.readFileSync(path.join(articles_path, article_name), 'utf8');
-        const metadata_json = metadata_regex.exec(content);
-        if (metadata_json == null) {
-            throw new Error(`didn't found metadata for ${article_name}`);
-        }
+  const article_names = fs.readdirSync(articles_path);
+  const articles = [];
 
-        const metadata = JSON.parse(metadata_json[1]);
-        const html = content.substr(metadata_json[0].length);
-        const intro = `
+  for (const article_name of article_names) {
+    const content = fs.readFileSync(
+      path.join(articles_path, article_name),
+      "utf8"
+    );
+    const metadata_json = metadata_regex.exec(content);
+    if (metadata_json == null) {
+      throw new Error(`didn't found metadata for ${article_name}`);
+    }
+
+    const metadata = JSON.parse(metadata_json[1]);
+    if (!metadata.available) {
+      try {
+        fs.unlinkSync(article_name);
+      } catch (err) {
+        if (err.code !== "ENOENT") throw err;
+      }
+      continue;
+    }
+
+    const html = content.substr(metadata_json[0].length);
+    const intro = `
         <p><time datetime="${metadata.time}">
-            ${new Intl.DateTimeFormat('en-GB', time_options).format(new Date(metadata.time))}
+            ${new Intl.DateTimeFormat("en-GB", time_options).format(
+              new Date(metadata.time)
+            )}
         </time> ${metadata.intro}</p>
         `;
 
-        articles.push(`
-        <article>
-            <span class="kicker">${metadata.kicker}</span>
-            <h3><a href="${article_name}">${metadata.title}</a></h3>
-            ${intro}
-        </article>
-        `);
-        fs.writeFileSync(article_name, template(article_name, article_template(metadata, intro, html)));
-    }
-    fs.writeFileSync('index.html', template(null, home_template(articles.join('\n'))));
+    articles.push(`
+            <article>
+                <span class="kicker">${metadata.kicker}</span>
+                <h3><a href="${article_name}">${metadata.title}</a></h3>
+                ${intro}
+            </article>
+            `);
+
+    fs.writeFileSync(
+      article_name,
+      template(article_name, article_template(metadata, intro, html))
+    );
+  }
+  fs.writeFileSync(
+    "index.html",
+    template(null, home_template(articles.join("\n")))
+  );
 }
 
 main();
